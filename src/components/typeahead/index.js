@@ -19,8 +19,8 @@ export class Typeahead extends Component {
 
   }
 
-  onMouseover() {
-    console.log('onMouseover');
+  onMouseover(el, evt) {
+    this.trigger('hover');
   }
 
   get events() {

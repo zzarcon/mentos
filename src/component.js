@@ -23,17 +23,34 @@ export class Component extends HTMLElement {
   }
 
   attachedCallback() {
-    this.addEvents();
+    this.addDomEvents();
   }
 
-  addEvents() {
+  addDomEvents() {
     if (!this.events) return;
+    const component = this;
 
     Object.keys(this.events).forEach(eventName => {
       const action = this.events[eventName];
 
-      this.domElement.addEventListener(eventName, action);
+      this.domElement.addEventListener(eventName, function(e) {
+        action.call(component, this, e);
+      });
     });
+  }
+
+  //Syntax sugar over addEventListener on the domElement
+  on(eventName, handler) {
+    this.domElement.addEventListener(eventName, handler);
+
+    return this;
+  }
+
+  //Actually triggers a CustomEvent which is handled by the domElement internally
+  trigger(eventName, eventOptions) {
+    const event = new CustomEvent(eventName, {detail: eventOptions});
+
+    this.domElement.dispatchEvent(event);
   }
 
   detachedCallback() {

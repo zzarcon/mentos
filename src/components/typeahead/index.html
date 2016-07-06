@@ -15,10 +15,19 @@
   <script>
     const typeahead = document.querySelector('z-typeahead');
     const initialData = {
-      values: ['Valencia', 'Barcelona', 'Madrid', 'Linz']
+      active: 'Valencia',
+      values: ['Barcelona', 'Valencia', 'Madrid', 'Linz']
     };
 
     typeahead.setData(initialData);    
+
+    typeahead
+      .on('activeChange', newActive => {
+        console.log(newActive);
+      })
+      .on('hover', e => {
+        console.log('hover')
+      });
   </script>
 </body>
 </html>
