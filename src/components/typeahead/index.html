@@ -3,9 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Typeahead demo</title>
+  <style>
+    div{
+      border: 1px solid black;
+    }
+  </style>
 </head>
 <body>
   <z-typeahead></z-typeahead>
   <script src="../../../dist/bundle.js"></script>
+  <script>
+    const typeahead = document.querySelector('z-typeahead');
+    const initialData = {
+      values: ['Valencia', 'Barcelona', 'Madrid', 'Linz']
+    };
+
+    typeahead.setData(initialData);    
+  </script>
 </body>
 </html>
