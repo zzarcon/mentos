@@ -1,0 +1,43 @@
+{
+  "name": "z00",
+  "version": "0.1.0",
+  "description": "Set of curated UI elements built with web components",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "npm-run-all --parallel serve watch",
+    "watch": "watchify src/index.js -t babelify -o dist/bundle.js",
+    "serve": "serve",
+    "styles": "node-sass styles/app.scss dist/app.css -w",
+    "test": "npm-run-all --parallel serve test:browser:watch",
+    "test:browser:watch": "watchify tests/runners/browser.js -t babelify -o tests/test_bundle.js",
+    "lint": "eslint ./lib",
+    "deploy": "npm run lint && firebase deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zzarcon/z00.git"
+  },
+  "author": "zzarcon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zzarcon/z00/issues"
+  },
+  "homepage": "https://github.com/zzarcon/z00#readme",
+  "devDependencies": {
+    "babel-eslint": "^6.0.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "eslint": "^2.12.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.8.1",
+    "node-sass": "^3.7.0",
+    "npm-run-all": "^2.1.1",
+    "serve": "^1.4.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.5.1",
+    "tape-dom": "0.0.10",
+    "tape-run": "^2.1.4",
+    "watchify": "^3.7.0"
+  }
+}
