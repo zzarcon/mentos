@@ -1,11 +1,25 @@
 //Create/Inject 'container' somehow
+import StyleSheet from 'stilr';
 
 export class Component extends HTMLElement {
   createdCallback() {
     const root = this.createShadowRoot(); 
-    
-    this.domElement = root;
-    this.domElement.innerHTML = this.initialState();
+    const state = this.initialState();
+
+    //TODO: ensure 'styles' and 'template' are valid
+    this.styles = state.styles;
+    this.template = state.template;
+    this.data = state.data; //Is not mandatory to return 'initial data' from initialState method
+    this.root = root;
+    this.domElement = this.createDomElement();
+    this.domElement.innerHTML = this.template(this.data, this.styles);
+    this.root.appendChild(this.domElement);
+  }
+
+  createDomElement() {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('z-dom-element');
+    return wrapper;
   }
 
   //This method should render the initial state of the component
@@ -14,7 +28,7 @@ export class Component extends HTMLElement {
   initialState() {
     console.warn('No initialState defined');
 
-    return '';
+    return {};
   }
 
   setData(data) {
@@ -24,18 +38,41 @@ export class Component extends HTMLElement {
 
   attachedCallback() {
     this.addDomEvents();
+    this.addStyles();
+  }
+
+  addStyles() {
+    const styles = document.createElement('style');
+    const componentStyles = StyleSheet.render();
+
+    StyleSheet.clear();
+    styles.appendChild(document.createTextNode(componentStyles));
+    this.root.appendChild(styles);
   }
 
   addDomEvents() {
     if (!this.events) return;
-    const component = this;
 
     Object.keys(this.events).forEach(eventName => {
-      const action = this.events[eventName];
+      let action = this.events[eventName];
+      let target;
 
-      this.domElement.addEventListener(eventName, function(e) {
-        action.call(component, this, e);
-      });
+      if (typeof action === 'object') {
+        target = action.target;
+        action = action.action;
+      }
+
+      this.addEvent(eventName, target, action);
+    });
+  }
+
+  addEvent(eventName, target, action) {
+    const component = this;
+
+    this.domElement.addEventListener(eventName, function(e) {
+      const matchesTarget = target ? e.target.classList.contains(target) : true;
+      
+      matchesTarget && action.call(component, this, e);
     });
   }
 

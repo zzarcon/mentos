@@ -1,7 +1,9 @@
-export default (data = {values: []}) => {
-  const options = data.values.map(v => `<option value="${v}">${v}</option>`).join('');
+export default (data = {values: []}, styles) => {
+  const options = data.values.map(v => `<li>${v}</li>`).join('');
 
   return `
-    <select>${options}</select>
+    <div class="${styles.container}"></div>
+    <input type="text" class="js-search-input" />
+    <ul>${options}</ul>
   `;
 };

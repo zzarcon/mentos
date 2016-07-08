@@ -1,13 +1,18 @@
 import {Component} from '../..';
 import template from './template';
+import styles from './styles';
 
 export class Typeahead extends Component {
   initialState() {
-    return template();
+    return {
+      styles,
+      template
+    };
   }
 
   update(data) {
-    this.domElement.innerHTML = template(data);
+    //TODO: Just update needed data
+    this.domElement.innerHTML = template(data, this.styles);
   }
 
   //Will handle data additions
@@ -16,21 +21,19 @@ export class Typeahead extends Component {
   }
 
   onClick() {
-
+    console.log('onClick')
   }
 
-  onMouseover(el, evt) {
-    this.trigger('hover');
+  onSearchChange() {
+    console.log('onSearchChange')
   }
 
   get events() {
     return {
-      //TODO: support this syntax
-      // click: {
-      //   target: '',
-      //   action: this.onClick
-      // },
-      mouseover: this.onMouseover
+      keyup: {
+        target: 'js-search-input',
+        action: this.onSearchChange
+      }
     };
   }
 }
