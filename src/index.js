@@ -1,4 +1,5 @@
 export {Component} from './component';
+export {default as Dom} from './dom';
 import * as components from './components';
 
 const registerComponents = (components) => {
